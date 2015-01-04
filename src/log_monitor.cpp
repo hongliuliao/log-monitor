@@ -36,6 +36,7 @@ public:
     LogMonitorHandler() {
         line_stat_map = new std::map<time_t, int>();
         cost_time_stat_map = new std::map<time_t, int>();
+	last_print_time = 0;
     }
 
     ~LogMonitorHandler() {
@@ -80,7 +81,7 @@ public:
             bool match_ret = is_match_reg(lines[i], configs[LINE_REG_NAME], excepted_match_size, match_str_array, matched_size);
 
             if (!match_ret || matched_size < excepted_match_size - 1) {
-                LOG_INFO("can not match line for reg:%s, match_ret:%d, matched_size:%d", configs[LINE_REG_NAME].c_str(), match_ret, matched_size);
+                LOG_DEBUG("can not match line for reg:%s, match_ret:%d, matched_size:%d", configs[LINE_REG_NAME].c_str(), match_ret, matched_size);
                 continue;
             }
 
@@ -95,11 +96,11 @@ public:
             }
             LOG_DEBUG("get time_details:%s, log_time:%d, has_cost_time:%d", time_details, log_time, has_cost_time);
 
-            time_t now = time(NULL);
-            time_t expired_time = now - atoi(configs[RETAIN_SECONDS_NAME].c_str());
+           // time_t now = time(NULL);
+            time_t expired_time = log_time - atoi(configs[RETAIN_SECONDS_NAME].c_str());
 
-            remove_expired_keys(*line_stat_map, expired_time);
-            remove_expired_keys(*cost_time_stat_map, expired_time);
+            //remove_expired_keys(*line_stat_map, expired_time);
+            //remove_expired_keys(*cost_time_stat_map, expired_time);
 
             if (line_stat_map->find(log_time) == line_stat_map->end()) {
                 (*line_stat_map)[log_time] = 1;
@@ -115,6 +116,29 @@ public:
                     (*cost_time_stat_map)[log_time] += cost_time;
                 }
             }
+
+	    if (last_print_time == 0) {
+	   	last_print_time = log_time; 
+	    } else if (last_print_time != log_time) {
+	    	std::stringstream monitor_log;
+		char time_buff[20];
+		bzero(time_buff, 20);
+		struct tm *timeinfo = localtime(&last_print_time);
+		strftime(time_buff, 20, "%Y-%m-%d %H:%M:%S", timeinfo);
+
+		monitor_log << " log_time: " << time_buff;
+		int qps = (*line_stat_map)[last_print_time];
+		monitor_log << ", QPS:";
+		monitor_log << qps;
+		if (has_cost_time) {
+			int ct = (*cost_time_stat_map)[last_print_time];
+			monitor_log << ", avg_cost_time:" << ct / qps;
+		}
+		last_print_time = log_time;
+		LOG_INFO("[log_monitor] %s", monitor_log.str().c_str());
+	    }
+
+
         }
 
         pthread_mutex_unlock(&_mutex);
@@ -147,6 +171,7 @@ private:
     std::map<time_t, int> *line_stat_map;
     std::map<time_t, int> *cost_time_stat_map;
     pthread_mutex_t _mutex;
+    time_t last_print_time;
 };
 
 LogMonitorHandler handler;
