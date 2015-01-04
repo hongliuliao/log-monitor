@@ -7,9 +7,10 @@ log_monitor
 ## 特点	
 (1)轻量: 共219KB(代码量约300行), 无需安装,加压即可使用	
 (2)低侵入: 基于日志文件进行统计,无需修改原程序
-(3)使用说明	
-二进制包:下载工具包 log_monitor.tar.gz,并解压(http://www.oschina.net/p/log_monitor)
-源码编译:make
+## 使用说明
+(1) 二进制包:下载工具包 log_monitor.tar.gz,并解压(http://www.oschina.net/p/log_monitor)
+
+(2) 源码编译:make
 
 之后进行参数配置,可以拷贝现有的,各个参数说明如下:
 ```
