@@ -103,8 +103,8 @@ public:
            // time_t now = time(NULL);
             time_t expired_time = log_time - atoi(configs[RETAIN_SECONDS_NAME].c_str());
 
-            //remove_expired_keys(*line_stat_map, expired_time);
-            //remove_expired_keys(*cost_time_stat_map, expired_time);
+            remove_expired_keys(*line_stat_map, expired_time);
+            remove_expired_keys(*cost_time_stat_map, expired_time);
 
             if (line_stat_map->find(log_time) == line_stat_map->end()) {
                 (*line_stat_map)[log_time] = 1;
