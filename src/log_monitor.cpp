@@ -87,6 +87,10 @@ public:
 
             const char *time_details = match_str_array[index_of_log_time].c_str();
             struct tm tm;
+	    if (configs["set_year"] == "true") {
+	    	time_t now = time(NULL);
+		tm = *localtime(&now);
+	    }
             strptime(time_details, configs[TIME_FORMAT_NAME].c_str(), &tm);
             time_t log_time = mktime(&tm);
 
