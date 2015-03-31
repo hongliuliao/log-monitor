@@ -31,7 +31,7 @@ log_level=INFO
 
      http_port: 用来通过页面展示统计数据的端口
 
-     log_level: 日志级别
+     log_level: log monitor的日志级别
 
 ### 启动
 
