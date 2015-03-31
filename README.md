@@ -38,7 +38,8 @@ log_level=INFO
     ./bin/log_monitor [conf_file_path]
 
 ### 查看
+    (1) 在控制台就可以看到系统实时的qps以及每一秒中接口的平均耗时情况
 
-    通过浏览器访问 http://${ip}:{http_port}/show.html
+    (2) 通过浏览器访问 http://${ip}:{http_port}/show.html
 
-    就可以看到系统实时的qps以及每一秒中接口的平均耗时情况
+    
