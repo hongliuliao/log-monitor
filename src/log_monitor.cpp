@@ -314,11 +314,13 @@ int main(int argc, char** argv) {
         return -1;
     }
 
-    pthread_t id;
-    ret = pthread_create(&id, NULL, start_http_server, &configs);
-    if(ret) {
-        LOG_ERROR("Create pthread error( for start_http_server)!");
-        return 1;
+    if (!configs["http_port"].empty()) {
+        pthread_t id;
+        ret = pthread_create(&id, NULL, start_http_server, &configs);
+        if(ret) {
+            LOG_ERROR("Create pthread error( for start_http_server)!");
+            return 1;
+        }
     }
 
     FileAgent fa;
