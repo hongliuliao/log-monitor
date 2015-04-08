@@ -16,8 +16,6 @@
 #include "simple_log.h"
 #include "file_agent.h"
 #include "flow_handler.h"
-#include "simple_log.h"
-#include "http_server.h"
 #include "monitor_handler.h"
 #include "http_monitor.h"
 
