@@ -32,8 +32,6 @@ int main(int argc, char** argv) {
     std::map<std::string, std::string> configs;
     get_config_map(config_file, configs);
 
-    set_log_level(configs["log_level"].c_str());
-
     LogMonitorHandler &handler = *LogMonitorHandler::get_instance();
     int ret = handler.load_configs(config_file);
     if (ret != 0) {
