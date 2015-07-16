@@ -9,17 +9,17 @@
 #include "http_monitor.h"
 #include "monitor_handler.h"
 
-void get_count_statist_info(Request& request, Response &response) {
+void get_qps_statist_info(Request& request, Response &response) {
     std::vector<std::string> times;
     Json::Value root;
     Json::Value json_data;
 
     time_t now = time(NULL);
     time_t start = now - 10;
-    std::map<time_t,int> line_stat, cost_stat;
+    std::map<time_t, StatInfo> line_stat;
 
     LogMonitorHandler &handler = *LogMonitorHandler::get_instance();
-    handler.get_stat(start, now, line_stat, cost_stat);
+    handler.get_stat(start, now, line_stat);
 
     int max_value = 0;
     for (size_t i = 0; i < 5; i++) {
@@ -32,7 +32,7 @@ void get_count_statist_info(Request& request, Response &response) {
         strftime(day_str, 80, "%Y-%m-%d_%H:%M:%S", time_info);
 
         json_data[index]["unit"] = day_str;
-        int pv_value = line_stat.find(start + i) == line_stat.end() ? 0 : line_stat[start + i];
+        int pv_value = line_stat.find(start + i) == line_stat.end() ? 0 : line_stat[start + i].qps;
         if (pv_value == 0) {
             LOG_WARN("PV VALUE IS ZERO which stat_time:%d", stat_time);
         }
@@ -57,10 +57,10 @@ void get_time_statist_info(Request& request, Response &response) {
 
     time_t now = time(NULL);
     time_t start = now - 5;
-    std::map<time_t,int> line_stat, cost_stat;
+    std::map<time_t, StatInfo> line_stat;
 
     LogMonitorHandler &handler = *LogMonitorHandler::get_instance();
-    handler.get_stat(start, now, line_stat, cost_stat);
+    handler.get_stat(start, now, line_stat);
 
     for (size_t i = 0; i < 5; i++) {
         Json::ArrayIndex index = (Json::ArrayIndex) i;
@@ -72,10 +72,10 @@ void get_time_statist_info(Request& request, Response &response) {
         strftime(day_str, 80, "%Y-%m-%d_%H:%M:%S", time_info);
 
         json_data[index]["unit"] = day_str;
-        int pv_value = line_stat.find(start + i) == line_stat.end() ? 0 : line_stat[start + i];
+        int pv_value = line_stat.find(start + i) == line_stat.end() ? 0 : line_stat[start + i].qps;
         int avg_cost_time = 0;
         if (pv_value != 0) {
-            avg_cost_time = cost_stat[start + i] / pv_value;
+            avg_cost_time = line_stat[start + i].total_time / pv_value;
         }
         json_data[index]["value"] = avg_cost_time;
         LOG_DEBUG("start_time:%s, avg_cost_time:%d", day_str, avg_cost_time);
@@ -119,7 +119,7 @@ void *start_http_server(void *ptr) {
     // start a http server
     std::map<std::string, std::string> *configs = (std::map<std::string, std::string> *) ptr;
     HttpServer http_server;
-    http_server.add_mapping("/get_count", get_count_statist_info);
+    http_server.add_mapping("/get_count", get_qps_statist_info);
     http_server.add_mapping("/get_time", get_time_statist_info);
     http_server.add_mapping("/show.html", static_source_handler);
     http_server.add_mapping("/jscharts.js", static_source_handler);

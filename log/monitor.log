@@ -1,0 +1,2 @@
+2015-07-16 10:39:33.166 INFO src/log_monitor.cpp(58): START FILEAGENT for file:/home/liao/programs/nginx/logs/access.log
+2015-07-16 10:39:33.167 INFO src/epoll_socket.cpp(56): start Server Socket on port : 3344

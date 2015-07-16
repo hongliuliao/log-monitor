@@ -10,7 +10,7 @@
 
 #include "http_parser.h"
 
-void get_count_statist_info(Request& request, Response &response);
+void get_qps_statist_info(Request& request, Response &response);
 
 void get_time_statist_info(Request& request, Response &response);
 

@@ -3,7 +3,7 @@ dep_libs=dependency/simple_flow/lib/libflowserver.a dependency/simple_server/lib
 
 all: 
 	mkdir -p bin
-	g++ -g $(dep_includes) src/log_monitor.cpp src/http_monitor.cpp src/monitor_handler.cpp $(dep_libs) -lpthread -lcurl -o bin/log_monitor
+	g++ -g $(dep_includes) src/log_monitor.cpp src/http_monitor.cpp src/monitor_handler.cpp $(dep_libs) -lpthread -o bin/log_monitor
 	tar -czvf log_monitor.tar.gz bin/log_monitor conf resources
 
 test: log_monitor_test
