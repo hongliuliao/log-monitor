@@ -5,6 +5,7 @@
  *      Author: liao
  */
 #include <sstream>
+#include <cstdlib>
 #include "simple_config.h"
 #include "simple_log.h"
 #include "monitor_handler.h"

@@ -5,6 +5,7 @@
  *      Author: liao
  */
 #include <fstream>
+#include <cstdlib>
 #include "http_server.h"
 #include "http_monitor.h"
 #include "monitor_handler.h"

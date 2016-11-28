@@ -5,6 +5,7 @@
  *      Author: liao
  */
 #include <iostream>
+#include <cstdlib>
 #include <map>
 #include <time.h>
 #include <vector>
