@@ -27,16 +27,16 @@ void print_help() {
 
 int main(int argc, char** argv) {
     bool stat_flag = false;
-    std::string pat_str;
+    int interval = 1;
 
     int opt = -1;
-    while ((opt = getopt(argc, argv, "sP:")) != -1) {
+    while ((opt = getopt(argc, argv, "sd:")) != -1) {
         switch (opt) {
         case 's':
             stat_flag = true;
             break;
-        case 'P':
-            pat_str = optarg;
+        case 'd':
+            interval = atoi(optarg);
             break;
         default:
             print_help();
@@ -44,10 +44,8 @@ int main(int argc, char** argv) {
         }
     }
     LMConfig c;
-    if (!pat_str.empty()) {
-        c._pat = pat_str;
-    }
     c._is_stat = stat_flag;
+    c._interval = interval;
 
     if (argc != optind + 1) {
         if ((argv + optind)[0] == NULL) {

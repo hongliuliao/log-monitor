@@ -42,4 +42,6 @@ log_level=INFO
 
     (2) 通过浏览器访问 http://${ip}:{http_port}/show.html
 
-    
+### Now we have a new simple tool for stat qps: lm    
+    How to use? 
+    lm -s <file> or tail -f <file>|grep --line-buffered|lm -s

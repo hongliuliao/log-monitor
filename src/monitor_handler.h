@@ -61,6 +61,7 @@ class LMConfig {
         LMConfig();
         std::string _pat;
         bool _is_stat;
+        int _interval;
 };
 
 class LMHandler : public LineFlowHandler {

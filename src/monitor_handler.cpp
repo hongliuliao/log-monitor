@@ -137,6 +137,7 @@ void LogMonitorHandler::get_stat(time_t start, time_t end, std::map<time_t, Stat
 
 LMConfig::LMConfig() {
     _is_stat = false;
+    _interval = 1;
 };
 
 LMHandler::LMHandler(LMConfig c) {
@@ -153,7 +154,7 @@ int LMHandler::handle_single(std::string line) {
         return 0;
     } 
     time_t ct = time(NULL);
-    if (ct == _time) {
+    if (ct - _time >= _lmc._interval) {
         _qps++;
         return 0;
     } 
