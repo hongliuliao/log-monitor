@@ -5,6 +5,7 @@
  *      Author: liao
  */
 #include <sstream>
+#include <iostream>
 #include <cstdlib>
 #include "simple_config.h"
 #include "simple_log.h"
@@ -132,4 +133,53 @@ void LogMonitorHandler::get_stat(time_t start, time_t end, std::map<time_t, Stat
     get_range_map(stat_map, line_stat, start, end);
     pthread_mutex_unlock(&_mutex);
     LOG_INFO("line_stat_map size:%u, line_stat size:%u", stat_map.size(), line_stat.size());
+}
+
+LMConfig::LMConfig() {
+    _is_stat = false;
+};
+
+LMHandler::LMHandler(LMConfig c) {
+    _lmc = c;
+    _qps = 0;
+    _time = time(NULL);
+}
+
+LMHandler::~LMHandler() {}
+
+int LMHandler::handle_single(std::string line) {
+    if (!_lmc._is_stat) {
+        std::cout << line << std::endl;
+        return 0;
+    } 
+    time_t ct = time(NULL);
+    if (ct == _time) {
+        _qps++;
+        return 0;
+    } 
+    if (_qps != 0) {
+        std::cout << _qps << std::endl;
+    }
+    _time = ct;
+    _qps = 1;
+    return 0;
+}
+
+int LMHandler::handle_lines(std::vector<std::string> lines) {
+    for (int i = 0; i < lines.size(); i++) {
+        std::string line = lines[i];
+        handle_single(line);
+    }
+    return 0;
+}
+
+StdInHandler::StdInHandler(LMConfig c) : LMHandler(c) {}
+
+int StdInHandler::do_handle() {
+    std::string line;
+    while (true) {
+        std::getline(std::cin, line);
+        handle_single(line);
+    }
+    return 0;
 }

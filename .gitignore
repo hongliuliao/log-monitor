@@ -1,6 +1,9 @@
 .project
 .cproject
 bin
+tags
+output
+
 # Compiled Object files
 *.slo
 *.lo

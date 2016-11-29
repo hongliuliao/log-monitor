@@ -56,5 +56,37 @@ private:
     time_t last_print_time;
 };
 
+class LMConfig {
+    public:
+        LMConfig();
+        std::string _pat;
+        bool _is_stat;
+};
+
+class LMHandler : public LineFlowHandler {
+
+public:
+    LMHandler(LMConfig c);
+
+    virtual ~LMHandler();
+
+    int handle_lines(std::vector<std::string> lines);
+
+    int handle_single(std::string line);
+
+private:
+    LMConfig _lmc;
+    int _qps;
+    time_t _time;
+};
+
+class StdInHandler : public LMHandler {
+    public:
+        StdInHandler(LMConfig c);
+        int do_handle();
+        int handle_lines(std::vector<std::string> lines) {/*no use*/};
+    private:
+        LMConfig _lmc;
+};
 
 #endif /* LOG_MONITOR_HANDLER_H_ */
