@@ -22,7 +22,7 @@ log_monitor_test:
 	g++ -g $(dep_includes) test/log_monitor_test.cpp $(dep_libs) -o output/bin/log_monitor_test
 
 %.o: %.cpp
-	$(CXX) -c $(CXXFLAGS) $(dep_includes) $<  $(dep_libs) -o $@
+	$(CXX) -c $(CXXFLAGS) $(dep_includes) $< -o $@
 
 clean:
 	rm -rf output/* src/*.o

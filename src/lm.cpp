@@ -21,7 +21,7 @@
 #include "monitor_handler.h"
 
 void print_help() {
-    std::cout << "usage: ./lm [-s] log_file" << std::endl;
+    std::cout << "usage: ./lm [-s] [-d interval] log_file" << std::endl;
     std::cout << "example: ./lm /tmp/a.log" << std::endl;
 }
 

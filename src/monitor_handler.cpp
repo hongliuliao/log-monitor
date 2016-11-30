@@ -127,7 +127,7 @@ void LogMonitorHandler::get_range_map(std::map<time_t, StatInfo> & origin_map, s
         start_iter++;
     }
 }
-
+  
 void LogMonitorHandler::get_stat(time_t start, time_t end, std::map<time_t, StatInfo> & line_stat) {
     pthread_mutex_lock(&_mutex);
     get_range_map(stat_map, line_stat, start, end);

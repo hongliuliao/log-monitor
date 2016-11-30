@@ -44,4 +44,4 @@ log_level=INFO
 
 ### Now we have a new simple tool for stat qps: lm    
     How to use? 
-    lm -s <file> or tail -f <file>|grep --line-buffered|lm -s
+    lm -s <file> or tail -f <file>|grep --line-buffered <pattern>|lm -s
