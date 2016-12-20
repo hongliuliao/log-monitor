@@ -21,7 +21,7 @@
 #include "http_monitor.h"
 
 int main(int argc, char** argv) {
-    if(argc < 2) {
+    if (argc < 2) {
         std::cout << "usage: ./log_monitor [config_file]" << std::endl;
         std::cout << "example: ./log_monitor log_monitor.conf" << std::endl;
         exit(-1);

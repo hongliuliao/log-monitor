@@ -43,6 +43,26 @@ void LogMonitorHandler::remove_expired_keys(std::map<time_t, StatInfo> &m, time_
     }
 }
 
+int create_stat_log(StatInfo s, std::stringstream &monitor_log) {
+    char time_buff[20];
+    bzero(time_buff, 20);
+    struct tm *timeinfo = localtime(&(s.t));
+    strftime(time_buff, 20, "%Y-%m-%d %H:%M:%S", timeinfo);
+
+    monitor_log << "log_time: " << time_buff;
+    int qps = s.qps;
+    monitor_log << ", QPS:";
+    monitor_log << qps;
+    if (s.has_cost_time) {
+        int ct = s.total_time;
+        monitor_log << ", avg_cost_time:" << ct / qps;
+        monitor_log << ", max_cost_time:" << s.max_time;
+    }
+    //LOG_INFO("[log_monitor] %s", monitor_log.str().c_str());
+    //std::cout << monitor_log.str() << std::endl;
+    return 0;
+}
+
 int LogMonitorHandler::handle_lines(std::vector<std::string> lines) {
     pthread_mutex_lock(&_mutex);
 
@@ -93,21 +113,13 @@ int LogMonitorHandler::handle_lines(std::vector<std::string> lines) {
         if (last_print_time == 0) {
             last_print_time = log_time;
         } else if (last_print_time != log_time) {
+            StatInfo s = stat_map[last_print_time];
+            s.t = last_print_time;
+            s.has_cost_time = has_cost_time;
+            
             std::stringstream monitor_log;
-            char time_buff[20];
-            bzero(time_buff, 20);
-            struct tm *timeinfo = localtime(&last_print_time);
-            strftime(time_buff, 20, "%Y-%m-%d %H:%M:%S", timeinfo);
+            create_stat_log(s, monitor_log);
 
-            monitor_log << "log_time: " << time_buff;
-            int qps = stat_map[last_print_time].qps;
-            monitor_log << ", QPS:";
-            monitor_log << qps;
-            if (has_cost_time) {
-                int ct = stat_map[last_print_time].total_time;
-                monitor_log << ", avg_cost_time:" << ct / qps;
-                monitor_log << ", max_cost_time:" << stat_map[last_print_time].max_time;
-            }
             last_print_time = log_time;
             LOG_INFO("[log_monitor] %s", monitor_log.str().c_str());
         }
@@ -154,12 +166,19 @@ int LMHandler::handle_single(std::string line) {
         return 0;
     } 
     time_t ct = time(NULL);
-    if (ct - _time >= _lmc._interval) {
+    if (ct - _time < _lmc._interval) {
         _qps++;
         return 0;
     } 
     if (_qps != 0) {
-        std::cout << _qps << std::endl;
+        StatInfo s;
+        s.t = _time + _lmc._interval;
+        s.qps = _qps / _lmc._interval;
+        s.has_cost_time = false;
+        
+        std::stringstream ss;
+        create_stat_log(s, ss);
+        std::cout << ss.str() << std::endl;
     }
     _time = ct;
     _qps = 1;
@@ -167,7 +186,7 @@ int LMHandler::handle_single(std::string line) {
 }
 
 int LMHandler::handle_lines(std::vector<std::string> lines) {
-    for (int i = 0; i < lines.size(); i++) {
+    for (size_t i = 0; i < lines.size(); i++) {
         std::string line = lines[i];
         handle_single(line);
     }

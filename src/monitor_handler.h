@@ -12,10 +12,14 @@
 #include "flow_handler.h"
 
 struct StatInfo {
+    time_t t;
     int qps;
+    bool has_cost_time;
     int total_time;
     int max_time;
 };
+
+int create_stat_log(StatInfo s, std::stringstream &ss);
 
 class LogMonitorHandler : public LineFlowHandler {
 
@@ -85,7 +89,7 @@ class StdInHandler : public LMHandler {
     public:
         StdInHandler(LMConfig c);
         int do_handle();
-        int handle_lines(std::vector<std::string> lines) {/*no use*/};
+        int handle_lines(std::vector<std::string> lines) { return 0; /*no use*/ };
     private:
         LMConfig _lmc;
 };

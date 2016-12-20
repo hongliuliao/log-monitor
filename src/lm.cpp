@@ -30,11 +30,14 @@ int main(int argc, char** argv) {
     int interval = 1;
 
     int opt = -1;
-    while ((opt = getopt(argc, argv, "sd:")) != -1) {
+    while ((opt = getopt(argc, argv, "shd:")) != -1) {
         switch (opt) {
         case 's':
             stat_flag = true;
             break;
+        case 'h':
+            print_help();
+            exit(EXIT_SUCCESS);
         case 'd':
             interval = atoi(optarg);
             break;
