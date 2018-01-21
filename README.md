@@ -21,17 +21,13 @@ retain_seconds=3600
 http_port=3344
 log_level=INFO
 ```
-     log_file: 需要监控的日志的路径
-     
-     log_reg: 匹配的日期及耗时信息的正则表达式(需要加括号), 第一个括号匹配的是时间, 第二个是耗时
-     
-     time_format: 日志中日期的格式
-     
-     retain_seconds: 统计数据保留时间
-     
-     http_port: 用来通过页面展示统计数据的端口
-     
-     log_level: log monitor的日志级别
+
+   * log_file: 需要监控的日志的路径
+   * log_reg: 匹配的日期及耗时信息的正则表达式(需要加括号) 第一个括号匹配的是时间 第二个是耗时
+   * time_format: 日志中日期的格式
+   * retain_seconds: 统计数据保留时间
+   * http_port: 用来通过页面展示统计数据的端口
+   * log_level: log monitor的日志级别
 
 ### 启动
 
