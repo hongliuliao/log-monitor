@@ -1,0 +1,3 @@
+2019-06-13
+(1) Unit test code coverage up to 85%
+(2) Callback handler support non threadsafe class
