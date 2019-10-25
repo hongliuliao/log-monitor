@@ -11,12 +11,14 @@
 #include <map>
 #include "flow_handler.h"
 
-struct StatInfo {
-    time_t t;
-    int qps;
-    bool has_cost_time;
-    int total_time;
-    int max_time;
+class StatInfo {
+    public:
+        StatInfo();
+        time_t t;
+        int qps;
+        bool has_cost_time;
+        int total_time;
+        int max_time;
 };
 
 int create_stat_log(StatInfo s, std::stringstream &ss);
@@ -24,7 +26,7 @@ int create_stat_log(StatInfo s, std::stringstream &ss);
 class LogMonitorHandler : public LineFlowHandler {
 
 public:
-    ~LogMonitorHandler() {
+    virtual ~LogMonitorHandler() {
         if (INSTANCE != NULL) {
             delete INSTANCE;
             INSTANCE = NULL;
@@ -77,7 +79,7 @@ public:
 
     int handle_lines(std::vector<std::string> lines);
 
-    int handle_single(std::string line);
+    int handle_single(const std::string &line);
 
 private:
     LMConfig _lmc;

@@ -1,0 +1,27 @@
+<html>
+<head>
+
+<title>JSChart</title>
+<meta http-equiv="refresh" content="5">
+</head>
+<body>
+
+<div id="graph">Loading graph...</div>
+
+<script type="text/javascript">
+    var script = document.createElement("script");
+    script.src = "http://www.jscharts.com/script/jscharts.js?v=3.0";
+    script.type="text/javascript";
+    
+    script.onload = function(){
+	    var myChart = new JSChart('graph', 'line');
+	    myChart.setDataJSON("get_data");
+	    myChart.setSize(800, 300);
+	    myChart.draw();
+	}
+    document.getElementsByTagName("head")[0].appendChild(script);
+    
+</script>
+
+</body>
+</html>

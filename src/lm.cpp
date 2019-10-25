@@ -12,6 +12,7 @@
 #include <vector>
 #include <fstream>
 #include <sstream>
+#include <cctype>
 #include "pthread.h"
 
 #include "simple_config.h"

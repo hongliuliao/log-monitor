@@ -31,5 +31,5 @@ output
 *.exe
 *.out
 *.app
-#dependency/googletest/googletest/make/gtest_main.a
-#dependency/googletest/googletest/make/sample1_unittest
+dependency/googletest/googletest/make/gtest_main.a
+dependency/googletest/googletest/make/sample1_unittest

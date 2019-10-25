@@ -43,6 +43,14 @@ void LogMonitorHandler::remove_expired_keys(std::map<time_t, StatInfo> &m, time_
     }
 }
 
+StatInfo::StatInfo() {
+    t = 0;
+    qps = 0;
+    has_cost_time = false;
+    total_time = 0;
+    max_time = 0;
+}
+
 int create_stat_log(StatInfo s, std::stringstream &monitor_log) {
     char time_buff[20];
     bzero(time_buff, 20);
@@ -97,7 +105,7 @@ int LogMonitorHandler::handle_lines(std::vector<std::string> lines) {
         remove_expired_keys(stat_map, expired_time);
 
         if (stat_map.find(log_time) == stat_map.end()) {
-            StatInfo si = {0, 0, 0};
+            StatInfo si;
             stat_map[log_time] = si;
         }
 
@@ -160,7 +168,16 @@ LMHandler::LMHandler(LMConfig c) {
 
 LMHandler::~LMHandler() {}
 
-int LMHandler::handle_single(std::string line) {
+bool is_num(const std::string &line) {
+    for (size_t i = 0; i < line.size(); i++) {
+        if (!std::isdigit(line[i])) {
+            return false;
+        }
+    }
+    return true;
+}
+
+int LMHandler::handle_single(const std::string &line) {
     if (!_lmc._is_stat) {
         std::cout << line << std::endl;
         return 0;
@@ -174,7 +191,16 @@ int LMHandler::handle_single(std::string line) {
         StatInfo s;
         s.t = _time + _lmc._interval;
         s.qps = _qps / _lmc._interval;
-        s.has_cost_time = false;
+        if (is_num(line)) {
+            int cost = atoi(line.c_str());
+            s.total_time += cost;
+            s.has_cost_time = true;
+            if (cost > s.max_time) {
+                s.max_time = cost;
+            }
+        } else {
+            s.has_cost_time = false;
+        }
         
         std::stringstream ss;
         create_stat_log(s, ss);
