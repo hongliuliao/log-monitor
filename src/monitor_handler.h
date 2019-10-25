@@ -23,45 +23,6 @@ class StatInfo {
 
 int create_stat_log(StatInfo s, std::stringstream &ss);
 
-class LogMonitorHandler : public LineFlowHandler {
-
-public:
-    virtual ~LogMonitorHandler() {
-        if (INSTANCE != NULL) {
-            delete INSTANCE;
-            INSTANCE = NULL;
-        }
-    }
-
-    static LogMonitorHandler *get_instance() {
-        if (INSTANCE == NULL) {
-            INSTANCE = new LogMonitorHandler();
-        }
-        return INSTANCE;
-    }
-
-    int load_configs(char *config_file);
-
-    void remove_expired_keys(std::map<time_t, StatInfo> &m, time_t expired_time);
-
-    int handle_lines(std::vector<std::string> lines);
-
-    void get_range_map(std::map<time_t, StatInfo> & origin_map, std::map<time_t, StatInfo> & stat_map, time_t start, time_t end);
-
-    void get_stat(time_t start, time_t end, std::map<time_t, StatInfo> & line_stat);
-
-private:
-    LogMonitorHandler() {
-        last_print_time = 0;
-        INSTANCE = NULL;
-    }
-    std::map<std::string, std::string> configs;
-    std::map<time_t, StatInfo> stat_map;
-    static LogMonitorHandler *INSTANCE;
-    pthread_mutex_t _mutex;
-    time_t last_print_time;
-};
-
 class LMConfig {
     public:
         LMConfig();
