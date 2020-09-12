@@ -8,14 +8,14 @@ LDFLAGS += -pthread
 SIMPLE_FLOW_LIB_PATH=dependency/simple-flow/output/lib/libflowserver.a
 deps_dir=dependency
 dep_includes=-I dependency/simple_log/include -I dependency/hiredis/include -I dependency/json-cpp/include -I dependency/simple-flow/dependency/ehttp/output/include -I dependency/simple-flow/output/include
-dep_libs=dependency/simple-flow/output/lib/libflowserver.a dependency/simple-flow/dependency/ehttp/output/lib/libsimpleserver.a dependency/json-cpp/lib/libjson_libmt.a
+#dep_libs=dependency/simple-flow/output/lib/libflowserver.a dependency/simple-flow/dependency/ehttp/output/lib/libsimpleserver.a dependency/json-cpp/lib/libjson_libmt.a
 OUTPUT_INC_DIR=output/include
 OUTPUT_LIB_DIR=output/lib
 OUTPUT_LIB_PATH=$(OUTPUT_LIB_DIR)/liblog_monitor.a
 test_dep_includes=-I $(deps_dir)/googletest/googletest/include -I $(OUTPUT_INC_DIR)
 test_dep_libs=$(deps_dir)/googletest/googletest/make/gtest_main.a $(OUTPUT_LIB_PATH) $(SIMPLE_LOG_LIB_PATH) $(SIMPLE_FLOW_LIB_PATH)
 
-all: deps prepare lm liblog_monitor
+all: deps prepare lm 
 
 deps:
 	make -C dependency/googletest/googletest/make

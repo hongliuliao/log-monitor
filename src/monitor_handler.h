@@ -31,6 +31,7 @@ class LMConfig {
         int _interval;
 };
 
+/*
 class LMHandler : public LineFlowHandler {
 
 public:
@@ -47,14 +48,17 @@ private:
     int _qps;
     time_t _time;
 };
+*/
 
-class StdInHandler : public LMHandler {
+class StdInHandler {
     public:
         StdInHandler(LMConfig c);
         int do_handle();
-        int handle_lines(std::vector<std::string> lines) { return 0; /*no use*/ };
+        int handle_single(const std::string &line);
     private:
         LMConfig _lmc;
+        int _qps;
+        time_t _time;
 };
 
 #endif /* LOG_MONITOR_HANDLER_H_ */

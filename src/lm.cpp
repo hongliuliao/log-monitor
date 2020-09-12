@@ -60,20 +60,7 @@ int main(int argc, char** argv) {
         print_help();
         return 1;
     }
-    std::string log_file = (argv + optind)[0];
-    //std::cout << "stat_flag:" << stat_flag << ",pattern:" << pat_str << std::endl;
-    //std::cout << "input file:" << log_file << std::endl;
 
-    LMHandler handler(c);
-
-    FileAgent fa;
-    fa.set_flow_handler(handler);
-    
-    char log_file_path[log_file.size() + 1];
-    bzero(log_file_path, log_file.size() + 1);
-    log_file.copy(log_file_path, log_file.size());
-
-    LOG_INFO("START FILEAGENT for file:%s", log_file_path);
-    fa.start(log_file_path);
+    print_help();
     return 0;
 }

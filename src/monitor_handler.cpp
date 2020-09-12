@@ -52,6 +52,7 @@ LMConfig::LMConfig() {
     _interval = 1;
 };
 
+/*
 LMHandler::LMHandler(LMConfig c) {
     _lmc = c;
     _qps = 0;
@@ -59,6 +60,7 @@ LMHandler::LMHandler(LMConfig c) {
 }
 
 LMHandler::~LMHandler() {}
+*/
 
 bool is_num(const std::string &line) {
     for (size_t i = 0; i < line.size(); i++) {
@@ -69,7 +71,7 @@ bool is_num(const std::string &line) {
     return true;
 }
 
-int LMHandler::handle_single(const std::string &line) {
+int StdInHandler::handle_single(const std::string &line) {
     if (!_lmc._is_stat) {
         std::cout << line << std::endl;
         return 0;
@@ -103,6 +105,7 @@ int LMHandler::handle_single(const std::string &line) {
     return 0;
 }
 
+/*
 int LMHandler::handle_lines(std::vector<std::string> lines) {
     for (size_t i = 0; i < lines.size(); i++) {
         std::string line = lines[i];
@@ -110,8 +113,13 @@ int LMHandler::handle_lines(std::vector<std::string> lines) {
     }
     return 0;
 }
+*/
 
-StdInHandler::StdInHandler(LMConfig c) : LMHandler(c) {}
+StdInHandler::StdInHandler(LMConfig c) {
+    _lmc = c;
+    _qps = 0;
+    _time = time(NULL);
+}
 
 int StdInHandler::do_handle() {
     std::string line;
