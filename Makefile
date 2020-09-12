@@ -26,7 +26,7 @@ prepare:
 	mkdir -p $(OUTPUT_INC_DIR)
 	mkdir -p $(OUTPUT_LIB_DIR)
 
-test: lm monitor_handler_test
+test: lm 
 
 liblog_monitor: src/monitor_handler.cpp
 	cp -rf src/*.h $(OUTPUT_INC_DIR)
