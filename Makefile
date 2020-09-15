@@ -29,7 +29,7 @@ prepare:
 
 test: lm monitor_handler_test
 
-liblog_monitor: src/monitor_handler.cpp
+liblog_monitor: src/monitor_handler.o
 	cp -rf src/*.h $(OUTPUT_INC_DIR)
 	ar -rcs output/lib/liblog_monitor.a src/*.o
 
