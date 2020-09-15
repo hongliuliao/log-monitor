@@ -12,5 +12,5 @@ jobs:
     - name: make
       run: make
     - name: make test
-      run: make test && ./output/bin/monitor_handler_test
+      run: make test && ./output/test/monitor_handler_test
 
