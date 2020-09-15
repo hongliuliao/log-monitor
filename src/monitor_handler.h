@@ -14,6 +14,7 @@
 class StatInfo {
     public:
         StatInfo();
+        int reset();
         time_t t;
         int qps;
         bool has_cost_time;
@@ -54,11 +55,12 @@ class StdInHandler {
     public:
         StdInHandler(LMConfig c);
         int do_handle();
-        int handle_single(const std::string &line);
+        int handle_single(const std::string &line, time_t now);
     private:
         LMConfig _lmc;
         int _qps;
         time_t _time;
+        StatInfo _stat_info;
 };
 
 #endif /* LOG_MONITOR_HANDLER_H_ */
