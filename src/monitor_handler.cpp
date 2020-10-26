@@ -24,7 +24,7 @@ StatInfo::StatInfo() {
 }
 
 int StatInfo::reset() {
-    t = 0;
+    t = time(NULL);
     qps = 0;
     has_cost_time = false;
     total_time = 0;
@@ -88,7 +88,7 @@ int StdInHandler::handle_single(const std::string &line, time_t now) {
         _stat_info.has_cost_time = false;
     }
     _stat_info.qps++;
-    if (now - _time < _lmc._interval) {
+    if (now - _stat_info.t < _lmc._interval) {
         return 0;
     } 
 
@@ -112,8 +112,6 @@ int LMHandler::handle_lines(std::vector<std::string> lines) {
 
 StdInHandler::StdInHandler(LMConfig c) {
     _lmc = c;
-    _qps = 0;
-    _time = time(NULL);
 }
 
 int StdInHandler::do_handle() {

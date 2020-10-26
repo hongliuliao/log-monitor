@@ -58,8 +58,6 @@ class StdInHandler {
         int handle_single(const std::string &line, time_t now);
     private:
         LMConfig _lmc;
-        int _qps;
-        time_t _time;
         StatInfo _stat_info;
 };
 
